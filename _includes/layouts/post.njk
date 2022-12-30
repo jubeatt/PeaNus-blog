@@ -6,11 +6,19 @@ templateClass: tmpl-post
 
 
 {% block extraArticleHeader %}
-   {% set wc = content | striptags | wordcount %}
-   {% set wPerMinute = (wc / 240) + 1 %}
-   <aside>
-     {{ wPerMinute | round }} min read.
-   </aside>
+  {% set wc = content | striptags | wordcount %}
+  {% set wPerMinute = (wc / 240) + 1 %}
+  <aside>
+    <div class="post-header">
+      <img class="avatar avatar-md" src="{{ metadata.author.avatarUrl }}" alt="author's avatar" />
+      <a href='/about'>{{ metadata.author.name }}</a>&nbsp;於&nbsp;<time class="f-monospace">{{  date | htmlDateString }}</time>&nbsp;發佈&nbsp;
+    </div>
+    <ul class="post-tags">
+      {% for tag in tags | excludePost  %}
+        <li><a href="#">#{{ tag }}</a></li> 
+      {% endfor %}
+    </ul>
+  </aside>
 {% endblock %}
 
 {% set shareUrl = metadata.url + page.url %}
@@ -18,12 +26,21 @@ templateClass: tmpl-post
 {% block article %}
 {{ content | safe }}
 
-<h1>🙏🙏🙏</h1>
-<p>
+<hr />
+
+<h3>關於作者</h3>
+<div class="about-author">
+  <img class="avatar avatar-lg" src="{{ metadata.author.avatarUrl }}" alt="author's avatar" />
+  <a href="/about">Peanu</a>
+</div>
+<p>{{ metadata.author.intro }}</p>
+
+
+{# <p>
   Since you've made it this far, <a href="{{ shareUrl | safe }}" on-click="share">sharing</a> this article on your favorite social media network 
   would be highly appreciated 💖! For feedback, please 
   <a href="https://twitter.com/{{ metadata.author.twitterHandle }}" target="_blank" rel="noopener">ping me on Twitter.</a>
-</p>
+</p> #}
 
 <share-widget>
   <button on-click="share" aria-label="Share" href="{{ shareUrl | safe }}">
