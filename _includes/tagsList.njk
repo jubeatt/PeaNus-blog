@@ -1,0 +1,13 @@
+<ul class="tag-list">
+{% for post in postslist | reverse %}
+  <li>
+    <a class="tag-title" href="{{ post.url | url }}">
+      {% if post.data.title %}
+        {{ post.data.title }}
+      {% else %}
+        <code>{{ post.url }}</code>
+      {% endif %}
+    </a>
+  </li>
+{% endfor %}
+</ul>

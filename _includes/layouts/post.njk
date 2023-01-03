@@ -9,13 +9,13 @@ templateClass: tmpl-post
   {% set wc = content | striptags | wordcount %}
   {% set wPerMinute = (wc / 240) + 1 %}
   <aside>
-    <div class="post-header">
-      <img class="avatar avatar-md" src="{{ metadata.author.avatarUrl }}" alt="author's avatar" />
-      <a href='/about'>{{ metadata.author.name }}</a>&nbsp;於&nbsp;<time class="f-monospace">{{  date | htmlDateString }}</time>&nbsp;發佈&nbsp;
+    <div class="flex mb-20 justify-start items-center flex-wrap">
+      <img class="avatar avatar-md mr-10" src="{{ metadata.author.avatarUrl }}" alt="author's avatar" />
+      <a href='/about'>{{ metadata.author.name }}</a>&nbsp;於&nbsp;<time datetime="{{ date | htmlDateString }}" class="f-monospace">{{  date | htmlDateString }}</time>&nbsp;發佈&nbsp;
     </div>
     <ul class="post-tags">
       {% for tag in tags | excludePost  %}
-        <li><a href="#">#{{ tag }}</a></li> 
+        <li><a href="/tags/{{ tag }}">#{{ tag }}</a></li> 
       {% endfor %}
     </ul>
   </aside>
@@ -29,9 +29,9 @@ templateClass: tmpl-post
 <hr />
 
 <h3>關於作者</h3>
-<div class="about-author">
+<div class="flex items-center">
   <img class="avatar avatar-lg" src="{{ metadata.author.avatarUrl }}" alt="author's avatar" />
-  <a href="/about">Peanu</a>
+  <a class="ml-10" href="/about">Peanu</a>
 </div>
 <p>{{ metadata.author.intro }}</p>
 

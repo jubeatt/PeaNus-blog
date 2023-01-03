@@ -1,11 +1,23 @@
 /* Color customization */
 :root {
-  --primary: #fdca40;
-  --primary-dark: #e7bf60;
-  --primary-light: rgb(70 58 26 / 50%);
-  --white: #ffffff;
-  --bg-color: #181818;
-  --font-color: #292929;
+  --yellow2: #f9b600;
+  --yellow-dark2: #d49c02;
+
+  --yellow: #fdca40;
+  --yellow-dark: #e7bf60;
+  --yellow-dark-opacity: rgb(70 58 26 / 50%);
+
+  --dark: #181818;
+  --white: #fafafa;
+  --gray: #cccccc;
+
+  --primary: var(--yellow);
+  --primary-dark: var(--yellow-dark);
+
+  --blockquote-bg: var(--yellow-dark-opacity);
+  --bg: var(--dark);
+  --fg: var(--white);
+  --border: var(--gray);
 
   --base-size: 18px;
   --h1: 1.8rem;
@@ -70,6 +82,12 @@ share-widget {
   opacity: 0.9;
 }
 
+share-widget button {
+  margin: 0;
+  padding: 0.65em;
+  border-radius: 50%;
+}
+
 share-widget div {
   width: 30px;
   height: 30px;
@@ -80,10 +98,6 @@ share-widget div {
 
 .apple share-widget div {
   background-image: url('/img/share-apple.svg');
-}
-
-share-widget button {
-  margin: 0;
 }
 
 share-widget button:active {
@@ -112,6 +126,7 @@ dl {
 #nav {
   z-index: 2;
   position: relative;
+  display: flex;
 }
 
 #reading-progress {
@@ -245,7 +260,18 @@ html {
   font-style: oblique 0deg 10deg;
   src: url('/fonts/Inter-3.19.var.woff2') format('woff2');
 }
-
+@font-face {
+  font-family: 'LuckiestGuy';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/fonts/LuckiestGuy-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Quantico';
+  font-weight: 400;
+  font-style: normal;
+  src: url('/fonts/Quantico-Regular.ttf') format('truetype');
+}
 /*
 
 The Bahunya CSS framework https://kimeiga.github.io/bahunya/
@@ -852,9 +878,29 @@ video {
   max-width: 100%;
 }
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: var(--font-family);
-  background: var(--bg-color);
-  color: #eee;
+  background: var(--bg);
+  color: var(--fg);
+}
+body.light {
+  --bg: var(--white);
+  --fg: var(--dark);
+  --primary: var(--yellow2);
+  --primary-dark: var(--yellow-dark2);
+  --blockquote-bg: var(--white);
+}
+
+@media (prefers-color-scheme: light) {
+  body.light {
+    --bg: var(--white);
+    --fg: var(--dark);
+    --primary: var(--yellow2);
+    --primary-dark: var(--yellow-dark2);
+    --blockquote-bg: var(--white);
+  }
 }
 section {
   margin-left: auto;
@@ -936,17 +982,17 @@ header nav label {
   text-align: right;
 }
 main {
+  width: 100%;
   max-width: 70rem;
   margin: 0 auto;
   border-top: 0.5px solid #ccc;
 }
 footer {
+  margin-top: auto;
   display: flex;
-  align-self: center;
   justify-content: center;
   padding: 3em;
-  color: var(--white);
-  background: var(--bg-color);
+  background: var(--bg);
   font-size: var(--small);
 }
 footer nav a img {
@@ -990,7 +1036,7 @@ blockquote {
   padding: 0.5em 1.5em;
   margin: 1.5em 0;
   border-left: 4px solid var(--primary);
-  background-color: var(--primary-light);
+  background-color: var(--blockquote-bg);
 }
 blockquote p {
   margin: 0;
@@ -1003,10 +1049,12 @@ blockquote footer {
   font-size: 90%;
   text-align: start;
 }
-img,
 video {
   height: auto;
   margin: 0 auto;
+}
+img {
+  height: auto;
 }
 figure {
   margin: 1.5em;
@@ -1138,22 +1186,6 @@ a {
 }
 
 /* customize css */
-@media (min-width: 768px) {
-  :root {
-    --h1: 2.2rem;
-    --h2: 1.8rem;
-    --h3: 1.6rem;
-    --h4: 1.4rem;
-    --h5: 1rem;
-    --h6: 1rem;
-    --p: 1rem;
-  }
-  code,
-  kbd {
-    font-size: 90%;
-  }
-}
-
 h1 {
   font-size: var(--h1);
 }
@@ -1178,26 +1210,64 @@ header > h1 {
 header aside {
   width: 100%;
 }
-
 footer img {
   width: 24px;
   border-radius: 2px;
-  margin-left: 10px;
+}
+#nav svg {
+  width: 30px;
+  color: black;
+  cursor: pointer;
 }
 
-.post-header {
+.inline-block {
+  display: inline-block;
+}
+.flex {
   display: flex;
-  justify-content: flex-start;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.items-center {
   align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.text-center {
+  text-align: center;
+}
+.mb-30 {
+  margin-bottom: 30px;
+}
+.mb-20 {
   margin-bottom: 20px;
 }
-.post-header img {
-  margin: 0;
+.mr-10 {
   margin-right: 10px;
+}
+.ml-10 {
+  margin-left: 10px;
 }
 .f-monospace {
   font-family: monospace;
 }
+.f-LuckiestGuy {
+  font-family: 'LuckiestGuy';
+}
+.f-Quantico {
+  font-family: 'Quantico';
+}
+.f-linear-gradient-text {
+  background: linear-gradient(to right, #79c4ea, #b98ce2, #9d39d4);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
 .avatar {
   width: 28px;
   height: 28px;
@@ -1212,6 +1282,10 @@ footer img {
   width: 60px;
   height: 60px;
 }
+.avatar-xl {
+  width: 150px;
+  height: 150px;
+}
 .posts-wrapper {
   margin: 40px 0;
 }
@@ -1224,17 +1298,11 @@ footer img {
 }
 .post-list li + li {
   margin-top: 1em;
-  border-top: 1px solid var(--white);
+  border-top: 0.5px solid var(--border);
 }
 .post-title {
   display: block;
   font-size: var(--h3);
-}
-.post-info {
-  display: flex;
-}
-.post-info .avatar {
-  margin-right: 8px;
 }
 .post-tags {
   display: flex;
@@ -1243,13 +1311,44 @@ footer img {
   list-style: none;
 }
 .post-tags li + li {
-  margin-left: 8px;
+  margin-left: 10px;
 }
-.about-author {
-  display: flex;
-  align-items: center;
+.archive-list li + li {
+  margin-top: 10px;
 }
-.about-author img {
-  margin: 0;
-  margin-right: 10px;
+.archive-item {
+  display: block;
+}
+.tag-list li + li {
+  margin-top: 1em;
+}
+.tag-title {
+  display: block;
+  font-size: var(--h4);
+}
+.single-tag + .single-tag {
+  margin-left: 10px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --h1: 2.2rem;
+    --h2: 1.8rem;
+    --h3: 1.6rem;
+    --h4: 1.4rem;
+    --h5: 1rem;
+    --h6: 1rem;
+    --p: 1rem;
+  }
+  code,
+  kbd {
+    font-size: 90%;
+  }
+  .archive-item {
+    display: flex;
+    align-items: center;
+  }
+  .archive-item time {
+    margin-left: 10px;
+  }
 }

@@ -19,118 +19,113 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const exposed = {};
+const exposed = {}
 if (location.search) {
-  var a = document.createElement("a");
-  a.href = location.href;
-  a.search = "";
-  history.replaceState(null, null, a.href);
+  var a = document.createElement('a')
+  a.href = location.href
+  a.search = ''
+  history.replaceState(null, null, a.href)
 }
 
 function tweet_(url) {
-  open(
-    "https://twitter.com/intent/tweet?url=" + encodeURIComponent(url),
-    "_blank"
-  );
+  open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(url), '_blank')
 }
 function tweet(anchor) {
-  tweet_(anchor.getAttribute("href"));
+  tweet_(anchor.getAttribute('href'))
 }
-expose("tweet", tweet);
+expose('tweet', tweet)
 
 function share(anchor) {
-  var url = anchor.getAttribute("href");
-  event.preventDefault();
+  var url = anchor.getAttribute('href')
+  event.preventDefault()
   if (navigator.share) {
     navigator.share({
-      url: url,
-    });
+      url: url
+    })
   } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(url);
-    message("Article URL copied to clipboard.");
+    navigator.clipboard.writeText(url)
+    message('Article URL copied to clipboard.')
   } else {
-    tweet_(url);
+    tweet_(url)
   }
 }
-expose("share", share);
+expose('share', share)
 
 function message(msg) {
-  var dialog = document.getElementById("message");
-  dialog.textContent = msg;
-  dialog.setAttribute("open", "");
+  var dialog = document.getElementById('message')
+  dialog.textContent = msg
+  dialog.setAttribute('open', '')
   setTimeout(function () {
-    dialog.removeAttribute("open");
-  }, 3000);
+    dialog.removeAttribute('open')
+  }, 3000)
 }
 
 function prefetch(e) {
-  if (e.target.tagName != "A") {
-    return;
+  if (e.target.tagName != 'A') {
+    return
   }
   if (e.target.origin != location.origin) {
-    return;
+    return
   }
   /**
    * Return the given url with no fragment
    * @param {string} url potentially containing a fragment
    * @return {string} url without fragment
    */
-  const removeUrlFragment = (url) => url.split("#")[0];
-  if (
-    removeUrlFragment(window.location.href) === removeUrlFragment(e.target.href)
-  ) {
-    return;
+  const removeUrlFragment = (url) => url.split('#')[0]
+  if (removeUrlFragment(window.location.href) === removeUrlFragment(e.target.href)) {
+    return
   }
-  var l = document.createElement("link");
-  l.rel = "prefetch";
-  l.href = e.target.href;
-  document.head.appendChild(l);
+  var l = document.createElement('link')
+  l.rel = 'prefetch'
+  l.href = e.target.href
+  document.head.appendChild(l)
 }
-document.documentElement.addEventListener("mouseover", prefetch, {
+document.documentElement.addEventListener('mouseover', prefetch, {
   capture: true,
-  passive: true,
-});
-document.documentElement.addEventListener("touchstart", prefetch, {
+  passive: true
+})
+document.documentElement.addEventListener('touchstart', prefetch, {
   capture: true,
-  passive: true,
-});
+  passive: true
+})
 
-const GA_ID = document.documentElement.getAttribute("ga-id");
+const GA_ID = document.documentElement.getAttribute('ga-id')
 window.ga =
   window.ga ||
   function () {
     if (!GA_ID) {
-      return;
+      return
     }
-    (ga.q = ga.q || []).push(arguments);
-  };
-ga.l = +new Date();
-ga("create", GA_ID, "auto");
-ga("set", "transport", "beacon");
+    ;(ga.q = ga.q || []).push(arguments)
+  }
+ga.l = +new Date()
+ga('create', GA_ID, 'auto')
+ga('set', 'transport', 'beacon')
 var timeout = setTimeout(
   (onload = function () {
-    clearTimeout(timeout);
-    ga("send", "pageview");
+    clearTimeout(timeout)
+    ga('send', 'pageview')
   }),
   1000
-);
+)
 
-var ref = +new Date();
+var ref = +new Date()
 function ping(event) {
-  var now = +new Date();
+  var now = +new Date()
   if (now - ref < 1000) {
-    return;
+    return
   }
-  ga("send", {
-    hitType: "event",
-    eventCategory: "page",
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'page',
     eventAction: event.type,
-    eventLabel: Math.round((now - ref) / 1000),
-  });
-  ref = now;
+    eventLabel: Math.round((now - ref) / 1000)
+  })
+  ref = now
 }
-addEventListener("pagehide", ping);
-addEventListener("visibilitychange", ping);
+addEventListener('pagehide', ping)
+addEventListener('visibilitychange', ping)
 
 /**
  * Injects a script into document.head
@@ -139,138 +134,165 @@ addEventListener("visibilitychange", ping);
  */
 const dynamicScriptInject = (src) => {
   return new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = src;
-    script.type = "text/javascript";
-    document.head.appendChild(script);
-    script.addEventListener("load", () => {
-      resolve(script);
-    });
-  });
-};
+    const script = document.createElement('script')
+    script.src = src
+    script.type = 'text/javascript'
+    document.head.appendChild(script)
+    script.addEventListener('load', () => {
+      resolve(script)
+    })
+  })
+}
 
 // Script web-vitals.js will be injected dynamically if user opts-in to sending CWV data.
-const sendWebVitals = document.currentScript.getAttribute("data-cwv-src");
+const sendWebVitals = document.currentScript.getAttribute('data-cwv-src')
 
 if (/web-vitals.js/.test(sendWebVitals)) {
   dynamicScriptInject(`${window.location.origin}/js/web-vitals.js`)
     .then(() => {
-      webVitals.getCLS(sendToGoogleAnalytics);
-      webVitals.getFID(sendToGoogleAnalytics);
-      webVitals.getLCP(sendToGoogleAnalytics);
+      webVitals.getCLS(sendToGoogleAnalytics)
+      webVitals.getFID(sendToGoogleAnalytics)
+      webVitals.getLCP(sendToGoogleAnalytics)
     })
     .catch((error) => {
-      console.error(error);
-    });
+      console.error(error)
+    })
 }
 
 addEventListener(
-  "click",
+  'click',
   function (e) {
-    var button = e.target.closest("button");
+    var button = e.target.closest('button')
     if (!button) {
-      return;
+      return
     }
-    ga("send", {
-      hitType: "event",
-      eventCategory: "button",
-      eventAction: button.getAttribute("aria-label") || button.textContent,
-    });
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'button',
+      eventAction: button.getAttribute('aria-label') || button.textContent
+    })
   },
   true
-);
-var selectionTimeout;
+)
+var selectionTimeout
 addEventListener(
-  "selectionchange",
+  'selectionchange',
   function () {
-    clearTimeout(selectionTimeout);
-    var text = String(document.getSelection()).trim();
+    clearTimeout(selectionTimeout)
+    var text = String(document.getSelection()).trim()
     if (text.split(/[\s\n\r]+/).length < 3) {
-      return;
+      return
     }
     selectionTimeout = setTimeout(function () {
-      ga("send", {
-        hitType: "event",
-        eventCategory: "selection",
-        eventAction: text,
-      });
-    }, 2000);
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'selection',
+        eventAction: text
+      })
+    }, 2000)
   },
   true
-);
+)
 
-if (window.ResizeObserver && document.querySelector("header nav #nav")) {
-  var progress = document.getElementById("reading-progress");
+if (window.ResizeObserver && document.querySelector('header nav #nav')) {
+  var progress = document.getElementById('reading-progress')
 
-  var timeOfLastScroll = 0;
-  var requestedAniFrame = false;
+  var timeOfLastScroll = 0
+  var requestedAniFrame = false
   function scroll() {
     if (!requestedAniFrame) {
-      requestAnimationFrame(updateProgress);
-      requestedAniFrame = true;
+      requestAnimationFrame(updateProgress)
+      requestedAniFrame = true
     }
-    timeOfLastScroll = Date.now();
+    timeOfLastScroll = Date.now()
   }
-  addEventListener("scroll", scroll);
+  addEventListener('scroll', scroll)
 
-  var winHeight = 1000;
-  var bottom = 10000;
+  var winHeight = 1000
+  var bottom = 10000
   function updateProgress() {
-    requestedAniFrame = false;
-    var percent = Math.min(
-      (document.scrollingElement.scrollTop / (bottom - winHeight)) * 100,
-      100
-    );
-    progress.style.transform = `translate(-${100 - percent}vw, 0)`;
+    requestedAniFrame = false
+    var percent = Math.min((document.scrollingElement.scrollTop / (bottom - winHeight)) * 100, 100)
+    progress.style.transform = `translate(-${100 - percent}vw, 0)`
     if (Date.now() - timeOfLastScroll < 3000) {
-      requestAnimationFrame(updateProgress);
-      requestedAniFrame = true;
+      requestAnimationFrame(updateProgress)
+      requestedAniFrame = true
     }
   }
 
   new ResizeObserver(() => {
     bottom =
       document.scrollingElement.scrollTop +
-      document.querySelector("#comments,footer").getBoundingClientRect().top;
-    winHeight = window.innerHeight;
-    scroll();
-  }).observe(document.body);
+      document.querySelector('#comments,footer').getBoundingClientRect().top
+    winHeight = window.innerHeight
+    scroll()
+  }).observe(document.body)
 }
 
 function expose(name, fn) {
-  exposed[name] = fn;
+  exposed[name] = fn
 }
 
-addEventListener("click", (e) => {
-  const handler = e.target.closest("[on-click]");
+addEventListener('click', (e) => {
+  const handler = e.target.closest('[on-click]')
   if (!handler) {
-    return;
+    return
   }
-  e.preventDefault();
-  const name = handler.getAttribute("on-click");
-  const fn = exposed[name];
+  e.preventDefault()
+  const name = handler.getAttribute('on-click')
+  const fn = exposed[name]
   if (!fn) {
-    throw new Error("Unknown handler" + name);
+    throw new Error('Unknown handler' + name)
   }
-  fn(handler);
-});
+  fn(handler)
+})
 
 function removeBlurredImage(img) {
   // Ensure the browser doesn't try to draw the placeholder when the real image is present.
-  img.style.backgroundImage = "none";
+  img.style.backgroundImage = 'none'
 }
 document.body.addEventListener(
-  "load",
+  'load',
   (e) => {
-    if (e.target.tagName != "IMG") {
-      return;
+    if (e.target.tagName != 'IMG') {
+      return
     }
-    removeBlurredImage(e.target);
+    removeBlurredImage(e.target)
   },
-  /* capture */ "true"
-);
-for (let img of document.querySelectorAll("img")) {
+  /* capture */ 'true'
+)
+for (let img of document.querySelectorAll('img')) {
   if (img.complete) {
-    removeBlurredImage(img);
+    removeBlurredImage(img)
   }
+}
+
+const DARK = 'dark'
+const LIGHT = 'light'
+const bodyEl = document.querySelector('body')
+const navEl = document.getElementById('nav')
+const switcherEl = document.getElementById('color-theme-switcher')
+const svgMoon =
+  'M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z'
+const svgSun =
+  'M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z'
+
+;(function initTheme() {
+  const currentTheme =
+    localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? DARK : LIGHT)
+  if (currentTheme === LIGHT) {
+    bodyEl.classList.add(LIGHT)
+  } else {
+    switcherEl.firstChild.setAttribute('d', svgSun)
+  }
+})()
+
+switcherEl.addEventListener('click', setTheme)
+
+function setTheme() {
+  const isDark = bodyEl.classList.contains(LIGHT)
+  localStorage.setItem('theme', isDark ? DARK : LIGHT)
+  bodyEl.classList.toggle(LIGHT)
+  switcherEl.firstChild.setAttribute('d', isDark ? svgSun : svgMoon)
 }

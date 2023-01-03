@@ -1,0 +1,16 @@
+<ul class="archive-list">
+{% for post in postslist | reverse %}
+  <li>
+    <div class="archive-item">
+      <a class="tag-title" href="{{ post.url | url }}">
+        {% if post.data.title %}
+          {{ post.data.title }}
+        {% else %}
+          <code>{{ post.url }}</code>
+        {% endif %}
+      </a>
+      <time class="f-monospace" datetime="{{ post.date | htmlDateString }}">{{ post.date | htmlDateString }}</time>
+    </div>
+  </li>
+{% endfor %}
+</ul>
