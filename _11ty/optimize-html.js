@@ -49,7 +49,7 @@ const purifyCss = async (rawContent, outputPath) => {
       encoding: 'utf-8'
     })
 
-    before = before.replace(/@font-face {/g, '@font-face {font-display:optional;')
+    // before = before.replace(/@font-face {/g, '@font-face {font-display:optional;')
 
     const purged = await new PurgeCSS().purge({
       content: [
@@ -71,7 +71,7 @@ const purifyCss = async (rawContent, outputPath) => {
       ],*/
       fontFace: true,
       variables: true,
-      safelist: ['light']
+      safelist: ['light', 'open']
     })
 
     const after = csso.minify(purged[0].css).css

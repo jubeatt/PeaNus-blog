@@ -267,6 +267,7 @@ for (let img of document.querySelectorAll('img')) {
   }
 }
 
+// dark / light mode switch
 const DARK = 'dark'
 const LIGHT = 'light'
 const bodyEl = document.querySelector('body')
@@ -296,3 +297,32 @@ function setTheme() {
   bodyEl.classList.toggle(LIGHT)
   switcherEl.firstChild.setAttribute('d', isDark ? svgSun : svgMoon)
 }
+
+// menu collapse
+const navBtn = document.querySelector('.nav-button')
+const navLinks = document.querySelector('.nav-links')
+navBtn.addEventListener('click', onClick)
+
+function onClick() {
+  navLinks.classList.toggle('open')
+}
+
+// click side to close menu
+window.addEventListener(
+  'click',
+  (event) => {
+    if (event.target.classList.contains('nav-button') || !navLinks.classList.contains('open')) {
+      return
+    }
+    navLinks.classList.remove('open')
+    event.stopPropagation()
+  },
+  true
+)
+// adjust menu collapse when resizing
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && navLinks.classList.contains('open')) {
+    navLinks.classList.remove('open')
+    console.log('close')
+  }
+})
