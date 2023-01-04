@@ -5,7 +5,7 @@
 
   --yellow: #fdca40;
   --yellow-dark: #e7bf60;
-  --yellow-dark-opacity: rgb(70 58 26 / 50%);
+  --yellow-dark-opacity: rgb(37 37 37 / 50%);
 
   --dark: #181818;
   --white: #fafafa;
@@ -660,14 +660,14 @@ pre code:not([class]) {
 code,
 kbd {
   border-radius: 0.3em;
-  color: #e2777a;
-  padding: 0 0.3em;
+  color: #e277a6;
+  padding: 0.15em 0.3em;
   font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
   font-size: 80%;
 }
 code,
 kbd {
-  background: #2d2d2d;
+  background: rgb(196 196 196 / 20%);
 }
 kbd {
   color: #7ec699;
@@ -1329,7 +1329,43 @@ footer img {
 .single-tag + .single-tag {
   margin-left: 10px;
 }
+.pagination-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+.pagination-list li + li {
+  margin-left: 8px;
+}
+.pagination-list a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  padding: 4px;
+  background-color: var(--white);
+  color: var(--dark);
+  font-size: var(--small);
+}
+.pagination-list li:not(:first-child):not(:last-child) a {
+  border: 1px solid var(--gray);
+}
+.pagination-list li:not(:first-child):not(:last-child) a.active {
+  border: 1px solid var(--primary);
+}
+.pagination-list li:first-child a,
+.pagination-list li:last-child a {
+  background-color: var(--primary);
+}
 
+.pagination-list li a.disabled {
+  background-color: var(--gray);
+  pointer-events: none;
+  color: var(--white);
+}
 @media (min-width: 768px) {
   :root {
     --h1: 2.2rem;

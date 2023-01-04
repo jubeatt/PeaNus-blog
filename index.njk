@@ -1,20 +1,71 @@
 ---
 title: Peanu's blog.
 layout: layouts/home.njk
-description: Description. Update me.
-image: https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg
+description: 分享 Web 相關技術，從寫文章中一步一步成長。.
 date: Last Modified
+pagination:
+  data: collections.posts
+  size: 8
+  reverse: true
+  alias: posts
+permalink: /{% if pagination.pageNumber > 0 %}articles/{{ pagination.pageNumber }}/{% endif %}
 ---
 
-<p>
-  Hi，歡迎來到 Peanu's blog，這裡是分享技術文章的地方，希望藉由分享來解決比較繁瑣的問題。
-</p>
+<div class="intro">
+  <p>
+    Hi，歡迎來到 Peanu's blog，這裡是分享技術文章的地方，希望藉由分享來解決比較繁瑣的問題。
+  </p>
+  <p>
+    這裡的主題大多會圍繞在 Web 領域，但偶爾也有可能會出現其他領域的內容。
+  </p>
+</div>
 
-<p>
-  這裡的主題大多會圍繞在 Web 領域，但偶爾也有可能會出現其他領域的內容。
-</p>
 
 <div class="posts-wrapper">
-  {% set postslist = collections.posts %}
+  {% set postslist = posts %}
   {% include "postslist.njk" %}
 </div>
+
+
+
+{% if pagination.pages.length > 0 %}
+  <nav class="pagination" aria-labelledby="pagination">
+    <ol class="pagination-list">
+    {# {% if pagination.pageNumber == 0 %} #}
+      <li>
+        <a 
+          href="{{ pagination.previousPageHref }}"
+          {% if pagination.pageNumber == 0 %}
+            class="disabled"
+          {% endif %}
+        >
+          ‹
+        </a>
+      </li>
+    {# {% endif %} #}
+    {% for pageEntry in pagination.pages %}
+      <li>
+        <a href="{{ pagination.hrefs[ loop.index0 ] }}"
+          {% if page.url == pagination.hrefs[ loop.index0 ] %} 
+            class="active"
+            aria-current="page"
+          {% endif %}>
+          {{ loop.index }}
+        </a>
+      </li>
+    {% endfor %}
+    {# {% if pagination.pageNumber == pagination.pages.length - 1 %} #}
+        <li>
+          <a 
+            href="{{ pagination.nextPageHref }}"
+            {% if pagination.pageNumber == pagination.pages.length - 1 %}
+              class="disabled"
+            {% endif %}
+          >
+            ›
+          </a>
+        </li>
+    {# {% endif %} #}
+    </ol>
+  </nav>
+{% endif %}

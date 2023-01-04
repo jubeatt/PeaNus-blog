@@ -1,5 +1,5 @@
 <ul class="post-list">
-{% for post in postslist | reverse %}
+{% for post in postslist  %}
   <li>
     <a class="post-title" href="{{ post.url | url }}">
       {% if post.data.title %}
