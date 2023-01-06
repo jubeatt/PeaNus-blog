@@ -19,11 +19,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-const { JSDOM } = require("jsdom");
-const cspHashGen = require("csp-hash-generator");
-const syncPackage = require("browser-sync/package.json");
-const fs = require("fs");
-const CSP = require("../_data/csp");
+const { JSDOM } = require('jsdom')
+const cspHashGen = require('csp-hash-generator')
+const syncPackage = require('browser-sync/package.json')
+const fs = require('fs')
+const CSP = require('../_data/csp')
 
 /**
  * Substitute the magic `HASHES` string in the CSP with the actual values of the
@@ -36,136 +36,118 @@ const CSP = require("../_data/csp");
 const AUTO_RELOAD_SCRIPTS = [
   quote(
     cspHashGen(
-      "//<![CDATA[\n    document.write(\"<script async src='/browser-sync/browser-sync-client.js?v=" +
+      '//<![CDATA[\n    document.write("<script async src=\'/browser-sync/browser-sync-client.js?v=' +
         syncPackage.version +
         '\'><\\/script>".replace("HOST", location.hostname));\n//]]>'
     )
-  ),
-];
+  )
+]
 
 function quote(str) {
-  return `'${str}'`;
+  return `'${str}'`
 }
 
 const addCspHash = async (rawContent, outputPath) => {
-  let content = rawContent;
+  let content = rawContent
 
-  if (outputPath && outputPath.endsWith(".html")) {
-    const dom = new JSDOM(content);
-    const cspAble = [
-      ...dom.window.document.querySelectorAll("script[csp-hash]"),
-    ];
+  if (outputPath && outputPath.endsWith('.html')) {
+    const dom = new JSDOM(content)
+    const cspAble = [...dom.window.document.querySelectorAll('script[csp-hash]')]
 
     const hashes = cspAble.map((element) => {
-      const hash = cspHashGen(element.textContent);
-      element.setAttribute("csp-hash", hash);
-      return quote(hash);
-    });
+      const hash = cspHashGen(element.textContent)
+      element.setAttribute('csp-hash', hash)
+      return quote(hash)
+    })
     if (isDevelopmentMode()) {
-      hashes.push.apply(hashes, AUTO_RELOAD_SCRIPTS);
+      hashes.push.apply(hashes, AUTO_RELOAD_SCRIPTS)
     }
 
-    content = dom.serialize();
+    content = dom.serialize()
 
     // write CSP Policy in headers file
-    const headersPath = "./_site/_headers";
-    const filePath = outputPath.replace("_site/", "/"); // _site/blog/index.html ->  /blog/index.html
-    const filePathPrettyURL = filePath.slice(0, -10); // blog/index.html ->  /blog/
+    const headersPath = './_site/_headers'
+    const filePath = outputPath.replace('_site/', '/') // _site/blog/index.html ->  /blog/index.html
+    const filePathPrettyURL = filePath.slice(0, -10) // blog/index.html ->  /blog/
     try {
-      const headers = fs.readFileSync(headersPath, { encoding: "utf-8" });
-      const regExp = /(# \[csp headers\][\r\n]+)([\s\S]*)(# \[end csp headers\])/;
-      const match = headers.match(regExp);
+      const headers = fs.readFileSync(headersPath, { encoding: 'utf-8' })
+      const regExp = /(# \[csp headers\][\r\n]+)([\s\S]*)(# \[end csp headers\])/
+      const match = headers.match(regExp)
       if (!match) {
         throw `Check your _headers file. I couldn't find the text block for the csp headers:
           # [csp headers]
           # this text will be replaced by apply-csp.js plugin
-          # [end csp headers]`;
+          # [end csp headers]`
       }
-      const oldCustomHeaders = headers.match(regExp)[2].toString();
+      const oldCustomHeaders = headers.match(regExp)[2].toString()
       const CSPPolicy = `Content-Security-Policy: ${CSP.apply().regular.replace(
-        "HASHES",
-        hashes.join(" ")
-      )}`;
-      let newCustomHeaders = oldCustomHeaders.concat(
-        "\n",
-        filePath,
-        "\n  ",
-        CSPPolicy
-      );
+        'HASHES',
+        hashes.join(' ')
+      )}`
+      let newCustomHeaders = oldCustomHeaders.concat('\n', filePath, '\n  ', CSPPolicy)
       if (filePath != filePathPrettyURL) {
-        newCustomHeaders = newCustomHeaders.concat(
-          "\n",
-          filePathPrettyURL,
-          "\n  ",
-          CSPPolicy
-        );
+        newCustomHeaders = newCustomHeaders.concat('\n', filePathPrettyURL, '\n  ', CSPPolicy)
       }
-      fs.writeFileSync(
-        headersPath,
-        headers.replace(regExp, `$1${newCustomHeaders}\n$3`)
-      );
+      fs.writeFileSync(headersPath, headers.replace(regExp, `$1${newCustomHeaders}\n$3`))
     } catch (error) {
-      console.log(
-        "[apply-csp] Something went wrong with the creation of the csp headers\n",
-        error
-      );
+      console.log('[apply-csp] Something went wrong with the creation of the csp headers\n', error)
     }
   }
 
-  return content;
-};
+  return content
+}
 
 function parseHeaders(headersFile) {
-  let currentFilename;
-  let headers = {};
+  let currentFilename
+  let headers = {}
   for (let line of headersFile.split(/[\r\n]+/)) {
-    if (!line) continue;
+    if (!line) continue
     if (/^\S/.test(line)) {
-      currentFilename = line;
-      headers[currentFilename] = [];
+      currentFilename = line
+      headers[currentFilename] = []
     } else {
-      line = line.trim();
-      const h = line.split(/:\s+/);
-      headers[currentFilename][h[0]] = h[1];
+      line = line.trim()
+      const h = line.split(/:\s+/)
+      headers[currentFilename][h[0]] = h[1]
     }
   }
-  return headers;
+  return headers
 }
 
 module.exports = {
   initArguments: {},
   configFunction: async (eleventyConfig, pluginOptions = {}) => {
-    eleventyConfig.addTransform("csp", addCspHash);
+    eleventyConfig.addTransform('csp', addCspHash)
   },
   parseHeaders: parseHeaders,
   cspDevMiddleware: function (req, res, next) {
-    const url = new URL(req.originalUrl, `http://${req.headers.host}/)`);
+    const url = new URL(req.originalUrl, `http://${req.headers.host}/)`)
     // add csp headers only for html pages (include pretty urls)
-    if (url.pathname.endsWith("/") || url.pathname.endsWith(".html")) {
-      let headers;
+    if (url.pathname.endsWith('/') || url.pathname.endsWith('.html')) {
+      let headers
       try {
         headers = parseHeaders(
-          fs.readFileSync("_site/_headers", {
-            encoding: "utf-8",
+          fs.readFileSync('_site/_headers', {
+            encoding: 'utf-8'
           })
-        )[url.pathname];
+        )[url.pathname]
       } catch (error) {
         console.error(
-          "[setBrowserSyncConfig] Something went wrong with the creation of the csp headers\n",
+          '[setBrowserSyncConfig] Something went wrong with the creation of the csp headers\n',
           error
-        );
+        )
       }
       if (headers) {
-        const csp = headers["Content-Security-Policy"];
+        const csp = headers['Content-Security-Policy']
         if (csp) {
-          res.setHeader("Content-Security-Policy", csp);
+          res.setHeader('Content-Security-Policy', csp)
         }
       }
     }
-    next();
-  },
-};
+    next()
+  }
+}
 
 function isDevelopmentMode() {
-  return /serve|dev/.test(process.argv.join());
+  return /serve|dev/.test(process.argv.join())
 }
