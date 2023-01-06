@@ -15,7 +15,7 @@ templateClass: tmpl-post
     </div>
     <ul class="post-tags">
       {% for tag in tags | excludePost  %}
-        <li><a href="/tags/{{ tag }}">#{{ tag }}</a></li> 
+        <li><a href="/tags/{{ tag | slugify }}">#{{ tag }}</a></li> 
       {% endfor %}
     </ul>
   </aside>

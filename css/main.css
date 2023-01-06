@@ -1388,10 +1388,7 @@ footer img {
 .archive-item {
   display: block;
 }
-.tag-list li + li {
-  margin-top: 1em;
-}
-.tag-title {
+.archive-title {
   display: block;
   font-size: var(--h4);
 }
