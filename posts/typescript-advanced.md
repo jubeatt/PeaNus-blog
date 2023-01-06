@@ -5,6 +5,7 @@ date: 2018-07-04
 scheduled: 2018-07-04
 tags: [TypeScript, JavaScript]
 layout: layouts/post.njk
+image: /img/posts/typescript-advanced/ogimage.png
 ---
 
 <!-- summary -->

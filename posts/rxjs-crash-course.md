@@ -5,6 +5,7 @@ date: 2022-12-15
 scheduled: 2022-12-15
 tags: JavaScript
 layout: layouts/post.njk
+image: /img/posts/rxjs-crash-course/ogimage.png
 ---
 
 <!-- summary -->

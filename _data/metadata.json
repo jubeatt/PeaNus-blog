@@ -1,24 +1,25 @@
 {
   "title": "Peanu's blog",
-  "url": "http://localhost:8080/",
-  "domain": "update-me.com",
-  "description": "Description of the website. Update me.",
+  "url": "https://pea-nus-blog.vercel.app",
+  "ogimage": "https://pea-nus-blog.vercel.app/img/ogimage.png",
+  "domain": "pea-nus-blog.vercel.app",
+  "description": "分享 Web 相關技術，從寫文章中一步一步成長。",
   "genre": "Insert a schema.org genre",
-  "googleAnalyticsId": "GA ID. Update me. Note, that this is not compatible with the not-yet-commonly used version 4 of Google Analytics",
+  "googleAnalyticsId": "",
   "sendWebVitals": false,
   "feed": {
-    "subtitle": "Subtitle. Update me.",
+    "subtitle": "Peanu's blog",
     "filename": "feed.xml",
     "path": "/feed/feed.xml",
-    "id": "https://update-me.com"
+    "id": "https://pea-nus-blog.vercel.app"
   },
   "jsonfeed": {
     "path": "/feed/feed.json",
-    "url": "https://update-me.com/feed/feed.json"
+    "url": "https://pea-nus-blog.vercel.app/feed/feed.json"
   },
   "author": {
     "name": "Peanu",
-    "twitterHandle": ".",
+    "twitterHandle": "",
     "avatarUrl": "/img/peanu.png",
     "intro": "你好，我是 Peanu。Peanu 這個名稱是來從「Peanut（花生）」而來的，因為我很喜歡花生。在接觸程式以前沒有對某樣事物抱持熱情，但現在既使花了一整天的時間來寫 code 也不會感到疲憊。目前擔任前端工程師，還在持續精進自己的能力，希望可以成為更好的工程師。"
   },
