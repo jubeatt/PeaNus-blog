@@ -1,7 +1,7 @@
 /* Color customization */
 :root {
-  --yellow2: #f9b600;
-  --yellow-dark2: #d49c02;
+  --yellow2: #f96e00;
+  --yellow-dark2: #d9721d;
 
   --yellow: #fdca40;
   --yellow-dark: #e7bf60;
@@ -1390,7 +1390,7 @@ footer img {
 }
 .archive-title {
   display: block;
-  font-size: var(--h4);
+  font-size: var(--h5);
 }
 .single-tag + .single-tag {
   margin-left: 10px;
@@ -1438,7 +1438,7 @@ footer img {
     --h2: 1.8rem;
     --h3: 1.6rem;
     --h4: 1.4rem;
-    --h5: 1rem;
+    --h5: 1.2rem;
     --h6: 1rem;
     --p: 1rem;
   }
