@@ -18,6 +18,7 @@
   --bg: var(--dark);
   --fg: var(--white);
   --border: var(--gray);
+  --svg-color: var(--white);
 
   --base-size: 18px;
   --h1: 1.8rem;
@@ -891,6 +892,7 @@ body.light {
   --primary: var(--yellow2);
   --primary-dark: var(--yellow-dark2);
   --blockquote-bg: var(--white);
+  --svg-color: var(--dark);
 }
 
 @media (prefers-color-scheme: light) {
@@ -900,6 +902,7 @@ body.light {
     --primary: var(--yellow2);
     --primary-dark: var(--yellow-dark2);
     --blockquote-bg: var(--white);
+    --svg-color: var(--dark);
   }
 }
 section {
@@ -1432,6 +1435,20 @@ footer img {
   pointer-events: none;
   color: var(--white);
 }
+.sns-link:not(:first-child) {
+  margin-left: 10px;
+}
+.sns-link svg {
+  width: 30px;
+  height: 30px;
+}
+.sns-link svg path {
+  fill: var(--svg-color);
+}
+.sns-link:hover svg path {
+  fill: var(--primary);
+}
+
 @media (min-width: 768px) {
   :root {
     --h1: 2.2rem;
